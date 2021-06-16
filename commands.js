@@ -75,7 +75,6 @@ class Argument {
 				}
 				break;
 		}
-
 		return valid;
 	}
 }
@@ -108,6 +107,7 @@ module.exports = {
 		return require(path);
 	},
 	registerCommands: function () {
+		console.log(`----------\nCMDs | Alias | Category\n----------`);
 		var cmds = fs.readdirSync(`./commands/`);
 		for (var module of cmds) {
 			var files = fs.readdirSync(`./commands/${module}`);
@@ -122,14 +122,12 @@ module.exports = {
 					for (var key in keys) {
 						if (keys[key].prototype instanceof Command) {
 							var command = new keys[key]();
-
+							console.log(`${command.name} || ${command.aliases} FOR ${command.category}`);
 							if (!this.categories.has(module)) {
 								this.registerCategories([module]);
 							}
-
 							this.commands.set(command.name, command);
 							this.namesAliases.push(command.name, ...command.aliases);
-
 							this.categories.get(module).addCommand(command);
 						}
 					}
